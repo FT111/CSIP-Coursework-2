@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Map;
 
 public class SortComparison {
@@ -22,8 +23,19 @@ public class SortComparison {
         return getCardValue(card2) > getCardValue(card1) ? -1 : 1;
     }
 
-//    static ArrayList<String> bubbleSort(ArrayList<String> array) {
-//    }
+    static ArrayList<String> bubbleSort(ArrayList<String> array) {
+        for (int i = 0; i < array.size()-1; i++) {
+            for (int j = 0; j < array.size()-1; j++) {
+                String card1 = array.get(j);
+                String card2 = array.get(j + 1);
+                if (cardCompare(card1,card2)>0) {
+                    array.set(j+1, card1);
+                    array.set(j, card2);
+                }
+            }
+        }
+        return array;
+    }
 //
 //    static ArrayList<String> mergeSort(ArrayList<String> array) {
 //
