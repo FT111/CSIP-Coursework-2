@@ -1,5 +1,9 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Function;
 
 public class SortComparison {
     private static final Map<Character, Integer> SuitRanks = Map.of(
@@ -40,4 +44,33 @@ public class SortComparison {
 //    static ArrayList<String> mergeSort(ArrayList<String> array) {
 //
 //    }
+
+    static void sortComparison(String... filePaths) {
+        var warmupArray = new ArrayList<String>(List.of("1S", "2H", "3D", "4C"));
+
+        var results = new HashMap<String, ArrayList<Long>>();
+        results.put("bubbleSort", new ArrayList<Long>());
+        results.put("mergeSort", new ArrayList<Long>());
+
+        for (String filePath : filePaths) {
+            recordBenchmark("bubbleSort",
+                    results,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            bubbleSort(warmupArray);
+                        }
+                    }
+                    );
+        }
+    }
+
+    static void recordBenchmark(String title, HashMap<String, ArrayList<Long>> results, Runnable func) {
+        var bench = new Benchmark(
+                func,
+                25
+        );
+        results.get(title).add(bench.Start());
+    }
+
 }
