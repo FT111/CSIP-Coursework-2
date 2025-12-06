@@ -3,8 +3,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class SortComparison {
     private static final Map<Character, Integer> SuitRanks = Map.of(
@@ -13,35 +11,42 @@ public class SortComparison {
             'D', 300,
             'S', 400
     );
+    private static final Map<String, Integer> cardCache = new HashMap<>();
+
 
     static int getCardValue(String card) {
-        char[] cardCharArray = card.toCharArray();
-        var cardSuitValue = SuitRanks.get(cardCharArray[cardCharArray.length-1]);
-        String cardValueString = "";
-        cardValueString += cardCharArray[0];
-        if (cardCharArray.length == 3) { cardValueString += cardCharArray[1]; }
+        char lastChar = card.charAt(card.length() - 1);
+        int cardSuitValue = SuitRanks.get(lastChar);
 
+        String cardValueString = card.substring(0, card.length() - 1);
         return cardSuitValue + Integer.parseInt(cardValueString);
+    }
+    static int getStoredCardValue(String card) {
+        return cardCache.computeIfAbsent(card, SortComparison::getCardValue);
     }
 
     static int cardCompare(String card1, String card2) {
-        return getCardValue(card2) > getCardValue(card1) ? -1 : 1;
+        return getStoredCardValue(card2) > getStoredCardValue(card1) ? -1 : 1;
     }
 
     static ArrayList<String> bubbleSort(ArrayList<String> array) {
-        for (int i = 0; i < array.size()-1; i++) {
-            for (int j = 0; j < array.size()-1; j++) {
+        int n = array.size();
+        for (int i = 0; i < n - 1; i++) {
+            boolean swapped = false;
+            for (int j = 0; j < n - 1 - i; j++) {  // Reduce comparisons each iteration
                 String card1 = array.get(j);
                 String card2 = array.get(j + 1);
-                if (cardCompare(card1,card2)>0) {
-                    array.set(j+1, card1);
+                if (cardCompare(card1, card2) > 0) {
+                    array.set(j + 1, card1);
                     array.set(j, card2);
+                    swapped = true;
                 }
             }
+            if (!swapped) break;  // Early termination if no swaps occurred
         }
         return array;
     }
-//
+    //
 //    static ArrayList<String> mergeSort(ArrayList<String> array) {
 //
 //    }
@@ -79,7 +84,7 @@ public class SortComparison {
     static void recordBenchmark(String title, HashMap<String, ArrayList<Double>> results, Runnable func) {
         var bench = new Benchmark(
                 func,
-               2
+               1
         );
         double result = (double)bench.Start() / 1000000;
         results.get(title).add(result);
