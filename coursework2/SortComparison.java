@@ -46,10 +46,39 @@ public class SortComparison {
         }
         return array;
     }
-    //
-//    static ArrayList<String> mergeSort(ArrayList<String> array) {
-//
-//    }
+
+    static ArrayList<String> mergeSort(ArrayList<String> array) {
+        // handle base case
+        if (array.size() <= 1) {return array;}
+
+        var midpoint = array.size()/2;
+        var left = new ArrayList<String>(array.subList(0, midpoint));
+        var right = new ArrayList<String>(array.subList(midpoint, array.size()));
+        var sortedLeft = mergeSort(left);
+        var sortedRight = mergeSort(right);
+
+        return merge(sortedLeft, sortedRight);
+    }
+
+    static ArrayList<String> merge(ArrayList<String> left, ArrayList<String> right) {
+        var outputArray = new ArrayList<String>();
+        var i = 0;
+        var j = 0;
+        while (i < left.size() && j < right.size()) {
+            if (cardCompare(left.get(i), right.get(j)) > 0) {
+                outputArray.add(left.get(i));
+                i += 1;
+            } else {
+                outputArray.add(right.get(j));
+                j += 1;
+
+            }
+        }
+        outputArray.addAll(left.subList(i, left.size()));
+        outputArray.addAll(right.subList(j, right.size()));
+
+        return outputArray;
+    }
 
     static void sortComparison(String... filePaths) throws IOException {
         var results = new HashMap<String, ArrayList<Double>>();
@@ -77,6 +106,15 @@ public class SortComparison {
                     }
                     );
 
+            recordBenchmark("mergeSort",
+                    results,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            mergeSort(new ArrayList<String>(ArrayFromFile));
+                        }
+                    }
+            );
         }
         IO.println(results);
     }
