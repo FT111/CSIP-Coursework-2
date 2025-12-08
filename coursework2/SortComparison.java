@@ -188,7 +188,7 @@ class Benchmark {
         this.benchmarkFunc = runnable;
 
         // Warm up function
-//        this.benchmarkFunc.run();
+        this.benchmarkFunc.run();
     }
 
     public long Start() {
