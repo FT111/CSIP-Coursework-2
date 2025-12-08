@@ -56,8 +56,8 @@ public class SortComparison {
         if (array.size() <= 1) {return array;}
 
         var midpoint = array.size()/2;
-        var left = new ArrayList<String>(array.subList(0, midpoint));
-        var right = new ArrayList<String>(array.subList(midpoint, array.size()));
+        var left = new ArrayList<String>(array.subList(midpoint, array.size()));
+        var right = new ArrayList<>(array.subList(0, midpoint));
         var sortedLeft = mergeSort(left);
         var sortedRight = mergeSort(right);
 
@@ -69,7 +69,7 @@ public class SortComparison {
         var i = 0;
         var j = 0;
         while (i < left.size() && j < right.size()) {
-            if (cardCompare(left.get(i), right.get(j)) > 0) {
+            if (cardCompare(left.get(i), right.get(j)) < 0) {
                 outputArray.add(left.get(i));
                 i += 1;
             } else {
@@ -115,7 +115,7 @@ public class SortComparison {
                     new Runnable() {
                         @Override
                         public void run() {
-                            mergeSort(new ArrayList<String>(ArrayFromFile));
+                            IO.println(mergeSort(new ArrayList<String>(ArrayFromFile)));
                         }
                     }
             );
