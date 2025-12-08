@@ -115,7 +115,7 @@ public class SortComparison {
                     new Runnable() {
                         @Override
                         public void run() {
-                            IO.println(mergeSort(new ArrayList<String>(ArrayFromFile)));
+                            mergeSort(new ArrayList<String>(ArrayFromFile));
                         }
                     }
             );
