@@ -141,8 +141,12 @@ public class SortComparison {
         try (var w = new BufferedWriter(new FileWriter("./sortComparison.csv"))) {
             w.write(", ");
             for (String parsedTestDataTitle : parsedTestDataTitles) {
-                w.write(parsedTestDataTitle + ", ");
-            }
+                if (parsedTestDataTitles.indexOf(parsedTestDataTitle) != parsedTestDataTitles.size()-1) {
+                    w.write(parsedTestDataTitle + ", ");
+                } else {
+                    w.write(parsedTestDataTitle);
+                }
+                }
             w.newLine();
 
             for (String title : results.keySet()) {
@@ -151,15 +155,13 @@ public class SortComparison {
 
                 // Write its results
                 for (Double res : results.get(title)) {
-                    String formattedResult;
-                    if (res.toString().length() > longestTestDataTitle) {
-                        formattedResult = res.toString().substring(0, longestTestDataTitle);
+                    String formattedResult = String.valueOf(Math.round(res));
+
+                    if (results.get(title).indexOf(res) != parsedTestDataTitles.size()-1) {
+                        w.write(formattedResult + ", ");
                     } else {
-                        formattedResult = res.toString();
+                        w.write(formattedResult);
                     }
-
-
-                    w.write(formattedResult + ", ");
                 }
                 w.newLine();
             }
