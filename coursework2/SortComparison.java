@@ -93,7 +93,7 @@ public class SortComparison {
             List<String> ArrayFromFile;
             Path path = Paths.get(filePath);
             try (var reader = Files.newBufferedReader(path)) {
-                ArrayFromFile = reader.readAllLines();
+                ArrayFromFile = Files.readAllLines(path);
             }
             // Verify array
             if (ArrayFromFile.size() <= 1) {
@@ -120,8 +120,6 @@ public class SortComparison {
                     }
             );
         }
-        IO.println(results);
-
         // Prepare formatting
         var longestAlgorithmTitle = 0;
         for (String k : results.keySet()) {
@@ -130,7 +128,8 @@ public class SortComparison {
             }
         }
 
-        var parsedTestDataTitles = Arrays.stream(filePaths).map(title -> title.split("\\.")[0].substring(4)).toList();
+        // Parse the filenames given into only their numerical length value
+        var parsedTestDataTitles = Arrays.stream(filePaths).map(title -> title.split("\\.")[0].substring(4)).collect(Collectors.toList());
         var longestTestDataTitle = 0;
         for (String k : parsedTestDataTitles) {
             if (k.length() > longestTestDataTitle) {
@@ -175,4 +174,30 @@ public class SortComparison {
         results.get(title).add(result);
     }
 
+}
+
+class Benchmark {
+    public int benchmarkCount;
+    private Runnable benchmarkFunc;
+
+    public Benchmark(Runnable runnable, int benchmarkCount) {
+        this.benchmarkCount = benchmarkCount;
+        this.benchmarkFunc = runnable;
+
+        // Warm up function
+//        this.benchmarkFunc.run();
+    }
+
+    public long Start() {
+        long totalTime = 0;
+        long startTime;
+
+        for (int i = 0; i < benchmarkCount; i++) {
+            startTime = System.nanoTime();
+            benchmarkFunc.run();
+            totalTime += System.nanoTime() - startTime;
+        }
+
+        return totalTime / this.benchmarkCount;
+    }
 }
