@@ -139,15 +139,15 @@ public class SortComparison {
         longestTestDataTitle += 3;
 
         try (var w = new BufferedWriter(new FileWriter("./sortComparison.csv"))) {
-            w.write(" ".repeat(longestAlgorithmTitle) + ",");
+            w.write(", ");
             for (String parsedTestDataTitle : parsedTestDataTitles) {
-                w.write(parsedTestDataTitle + " ".repeat(longestTestDataTitle - parsedTestDataTitle.length()) + ",");
+                w.write(parsedTestDataTitle + ", ");
             }
             w.newLine();
 
             for (String title : results.keySet()) {
                 // Write the algorithm title
-                w.write(title + " ".repeat(longestAlgorithmTitle - title.length()) + ",");
+                w.write(title + ", ");
 
                 // Write its results
                 for (Double res : results.get(title)) {
@@ -158,7 +158,8 @@ public class SortComparison {
                         formattedResult = res.toString();
                     }
 
-                    w.write(formattedResult + " ".repeat(longestTestDataTitle - formattedResult.length()) + ",");
+
+                    w.write(formattedResult + ", ");
                 }
                 w.newLine();
             }
