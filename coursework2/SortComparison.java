@@ -1,8 +1,12 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SortComparison {
     private static final Map<Character, Integer> SuitRanks = Map.of(
@@ -117,6 +121,49 @@ public class SortComparison {
             );
         }
         IO.println(results);
+
+        // Prepare formatting
+        var longestAlgorithmTitle = 0;
+        for (String k : results.keySet()) {
+            if (k.length() > longestAlgorithmTitle) {
+                longestAlgorithmTitle = k.length();
+            }
+        }
+
+        var parsedTestDataTitles = Arrays.stream(filePaths).map(title -> title.split("\\.")[0].substring(4)).toList();
+        var longestTestDataTitle = 0;
+        for (String k : parsedTestDataTitles) {
+            if (k.length() > longestTestDataTitle) {
+                longestTestDataTitle = k.length();
+            }
+        }
+        longestTestDataTitle += 3;
+
+        try (var w = new BufferedWriter(new FileWriter("./sortComparison.csv"))) {
+            w.write(" ".repeat(longestAlgorithmTitle) + ",");
+            for (String parsedTestDataTitle : parsedTestDataTitles) {
+                w.write(parsedTestDataTitle + " ".repeat(longestTestDataTitle - parsedTestDataTitle.length()) + ",");
+            }
+            w.newLine();
+
+            for (String title : results.keySet()) {
+                // Write the algorithm title
+                w.write(title + " ".repeat(longestAlgorithmTitle - title.length()) + ",");
+
+                // Write its results
+                for (Double res : results.get(title)) {
+                    String formattedResult;
+                    if (res.toString().length() > longestTestDataTitle) {
+                        formattedResult = res.toString().substring(0, longestTestDataTitle);
+                    } else {
+                        formattedResult = res.toString();
+                    }
+
+                    w.write(formattedResult + " ".repeat(longestTestDataTitle - formattedResult.length()) + ",");
+                }
+                w.newLine();
+            }
+        }
     }
 
     static void recordBenchmark(String title, HashMap<String, ArrayList<Double>> results, Runnable func) {
