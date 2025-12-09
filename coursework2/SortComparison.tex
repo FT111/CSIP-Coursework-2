@@ -1,0 +1,48 @@
+
+\documentclass{article}
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{steinmetz}
+\usepackage[a4paper,top=1cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\graphicspath{{images/}}
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+
+\title{CS1IP Coursework 2 \\ \small{Sort Comparison}}
+\author{Freddie Taylor}
+\date{}
+\begin{document}
+\maketitle
+
+    \includegraphics[width=\linewidth]{ComparisonChart}
+\vspace{5mm}
+\newline
+
+\noindent The two sorts initially perform similarly - with the 10 and 100 item benchmarks lacking
+any easily perceivable speed differences, despite the different time complexities.
+This is because the O($n \log_2 n$) complexity of the merge sort and O($n^2$) of bubble
+result in an extremely similar number of worst-case comparison operations at lower item counts
+    \begin{center}
+        \begin{tabular}{ c c c c}
+            & 10 items & 100 items & 10000 items \\
+            Merge Sort & $\approx 66$ comparisons & $\approx 664$ comparisons & $\approx 132{\small,}877$ \\
+            Bubble Sort & $\approx 100$ comparisons & $\approx 1000$ comparisons & $\approx 100{\small,}000{\small,}000$
+        \end{tabular}
+    \end{center}
+\noindent The differences in comparison count where items $\leq100$ between the two sorts shown above are
+    relatively inconsequential to modern CPUs unless performed many times, as shown by the results
+    all rounding approximately to a millisecond.
+    This suggests it's not always that beneficial to use a more complex, `faster' sort when you are
+    handling smaller arrays due to the marginal improvements found. \\
+
+    \noindent The major performance difference is observed when the number of items increases to $10{\small,}000$.
+    Due to merge sort's logarithmic time complexity, it performs, at most, 99,867,123 less comparison
+    operations, showing that the performance difference of the two significantly increases as item count
+    increases.
+\end{document}
