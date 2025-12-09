@@ -56,8 +56,8 @@ public class SortComparison {
         if (array.size() <= 1) {return array;}
 
         var midpoint = array.size()/2;
-        var left = new ArrayList<String>(array.subList(0, midpoint));
-        var right = new ArrayList<String>(array.subList(midpoint, array.size()));
+        var left = new ArrayList<String>(array.subList(midpoint, array.size()));
+        var right = new ArrayList<>(array.subList(0, midpoint));
         var sortedLeft = mergeSort(left);
         var sortedRight = mergeSort(right);
 
@@ -69,7 +69,7 @@ public class SortComparison {
         var i = 0;
         var j = 0;
         while (i < left.size() && j < right.size()) {
-            if (cardCompare(left.get(i), right.get(j)) > 0) {
+            if (cardCompare(left.get(i), right.get(j)) < 0) {
                 outputArray.add(left.get(i));
                 i += 1;
             } else {
@@ -141,8 +141,12 @@ public class SortComparison {
         try (var w = new BufferedWriter(new FileWriter("./sortComparison.csv"))) {
             w.write(", ");
             for (String parsedTestDataTitle : parsedTestDataTitles) {
-                w.write(parsedTestDataTitle + ", ");
-            }
+                if (parsedTestDataTitles.indexOf(parsedTestDataTitle) != parsedTestDataTitles.size()-1) {
+                    w.write(parsedTestDataTitle + ", ");
+                } else {
+                    w.write(parsedTestDataTitle);
+                }
+                }
             w.newLine();
 
             for (String title : results.keySet()) {
@@ -151,15 +155,13 @@ public class SortComparison {
 
                 // Write its results
                 for (Double res : results.get(title)) {
-                    String formattedResult;
-                    if (res.toString().length() > longestTestDataTitle) {
-                        formattedResult = res.toString().substring(0, longestTestDataTitle);
+                    String formattedResult = String.valueOf(Math.round(res));
+
+                    if (results.get(title).indexOf(res) != parsedTestDataTitles.size()-1) {
+                        w.write(formattedResult + ", ");
                     } else {
-                        formattedResult = res.toString();
+                        w.write(formattedResult);
                     }
-
-
-                    w.write(formattedResult + ", ");
                 }
                 w.newLine();
             }
@@ -186,7 +188,7 @@ class Benchmark {
         this.benchmarkFunc = runnable;
 
         // Warm up function
-//        this.benchmarkFunc.run();
+        this.benchmarkFunc.run();
     }
 
     public long Start() {

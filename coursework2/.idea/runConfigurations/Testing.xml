@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Testing" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="Testing" />
+    <module name="coursework2" />
+    <projectPathOnTarget name="projectPathOnTarget" value="/C:$PROJECT_DIR$/../../../../../../Theta/Documents/Projects/Remote" />
+    <target name="@@@LOCAL@@@" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
