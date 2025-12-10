@@ -37,7 +37,7 @@ public class SortComparison {
         int n = array.size();
         for (int i = 0; i < n - 1; i++) {
             boolean swapped = false;
-            for (int j = 0; j < n - 1 - i; j++) {  // Reduce comparisons each iteration
+            for (int j = 0; j < n - 1 - i; j++) { // Reduce comparisons each every iteration
                 String card1 = array.get(j);
                 String card2 = array.get(j + 1);
                 if (cardCompare(card1, card2) > 0) {
@@ -46,7 +46,7 @@ public class SortComparison {
                     swapped = true;
                 }
             }
-            if (!swapped) break;  // Early termination if no swaps occurred
+            if (!swapped) break; // Stop early if no swaps occur
         }
         return array;
     }

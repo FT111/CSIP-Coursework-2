@@ -31,12 +31,13 @@ result in an extremely similar number of worst-case comparison operations at low
     \begin{center}
         \begin{tabular}{ c c c c}
             & 10 items & 100 items & 10000 items \\
-            Merge Sort & $\approx 66$ comparisons & $\approx 664$ comparisons & $\approx 132{\small,}877$ \\
-            Bubble Sort & $\approx 100$ comparisons & $\approx 1000$ comparisons & $\approx 100{\small,}000{\small,}000$
+            Merge Sort & $\approx 33$ comparisons & $\approx 664$ comparisons & $\approx 132{\small,}877$ \\
+            Bubble Sort & $\approx 45$ comparisons & $\approx $4950 comparisons & $\approx 49 {\small,}995{\small,}000$
         \end{tabular}
     \end{center}
 \noindent The differences in comparison count where items $\leq100$ between the two sorts shown above are
-    relatively inconsequential to modern CPUs unless performed many times, as shown by the results
+    relatively inconsequential to modern CPUs unless performed frequently enough for the
+    differences to compound, as shown by the results
     all rounding approximately to a millisecond.
     This suggests it's not always that beneficial to use a more complex, `faster' sort when you are
     handling smaller arrays due to the marginal improvements found. \\
@@ -44,5 +45,8 @@ result in an extremely similar number of worst-case comparison operations at low
     \noindent The major performance difference is observed when the number of items increases to $10{\small,}000$.
     Due to merge sort's logarithmic time complexity, it performs, at most, 99,867,123 less comparison
     operations, showing that the performance difference of the two significantly increases as item count
-    increases.
-\end{document}
+    increases. This is because logarithmic time complexity's rate of growth decreases as item count grows,
+    while the quadratic complexity of bubble sort has a linear rate of growth.
+
+   \noindent The practical effect of this is that merge sort is much faster for larger data sets.
+    \end{document}
