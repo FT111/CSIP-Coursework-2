@@ -11,6 +11,7 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepackage{siunitx}
 \graphicspath{{images/}}
 \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 
@@ -32,7 +33,7 @@ result in an extremely similar number of worst-case comparison operations at low
         \begin{tabular}{ c c c c}
             & 10 items & 100 items & 10000 items \\
             Merge Sort & $\approx 33$ comparisons & $\approx 664$ comparisons & $\approx 132{\small,}877$ \\
-            Bubble Sort & $\approx 45$ comparisons & $\approx $4950 comparisons & $\approx 49 {\small,}995{\small,}000$
+            Bubble Sort & $\approx 45$ comparisons & $\approx 4950$ comparisons & $\approx 49 {\small,}995{\small,}000$
         \end{tabular}
     \end{center}
 \noindent The differences in comparison count where items $\leq100$ between the two sorts shown above are
@@ -42,11 +43,22 @@ result in an extremely similar number of worst-case comparison operations at low
     This suggests it's not always that beneficial to use a more complex, `faster' sort when you are
     handling smaller arrays due to the marginal improvements found. \\
 
+    \noindent Bubble Sort also has the advantage that it can detect when an array is sorted after every
+                iteration through it, which gives it a potential best case time complexity of O($n$)\\
+
     \noindent The major performance difference is observed when the number of items increases to $10{\small,}000$.
     Due to merge sort's logarithmic time complexity, it performs, at most, 99,867,123 less comparison
     operations, showing that the performance difference of the two significantly increases as item count
-    increases. This is because logarithmic time complexity's rate of growth decreases as item count grows,
-    while the quadratic complexity of bubble sort has a linear rate of growth.
-
-   \noindent The practical effect of this is that merge sort is much faster for larger data sets.
+    increases.
+This is reflected in the results found from the comparison benchmarks.
+The time taken inflates from similar times between the two sorts ($~0-1ms$) in the smaller sorts to $\sim\SI{750}{\milli\second}$
+(With memoisation, tested on a Ryzen 5 7600) for bubble sort, and $\sim\SI{6}{\milli\second}$ for merge sort $10{\small,}000$ items.
+This is because logarithmic time complexity's rate of growth decreases as item count grows,
+    while the quadratic complexity of bubble sort has a linear rate of growth. \\
+\newline
+   \noindent The practical effect of this is that merge sort is much faster for larger data sets. \\
+    \noindent I also tested the algorithms without memoisation of card value parsing.
+    Merge sort's result is effectively the same for $10{\small,}000$, at $\sim \SI{7}{\milli\second}$, while
+    bubble sort's increases even more to $\sim \SI{1700}{\milli\second}$, showing how the
+    few extra CPU cycles added every iteration have a major impact on overall performance.
     \end{document}
